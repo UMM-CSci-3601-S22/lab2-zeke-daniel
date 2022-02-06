@@ -22,8 +22,8 @@ public class Todo {
   // name of the field in the database.
   @SuppressWarnings({"MemberName"})
   public String _id;
-  public String name;
-  public int age;
-  public String company;
-  public String email;
+  public String owner;
+  public boolean status;
+  public String body;
+  public String category;
 }
