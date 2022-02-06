@@ -30,10 +30,10 @@ public class FilterTodosByOwnerFromDB {
     Todo[] allTodos = db.listTodos(new HashMap<>());
 
     Todo[] ownerBlancheTodos = db.filterTodosByOwner(allTodos, "Blanche");
-    assertEquals(3, ownerBlancheTodos.length, "Incorrect number of todos with owner Blanche");
+    assertEquals(43, ownerBlancheTodos.length, "Incorrect number of todos with owner Blanche");
 
     Todo[] ownerFryTodos = db.filterTodosByOwner(allTodos, "Fry");
-    assertEquals(1, ownerFryTodos.length, "Incorrect number of todos with owner Fry");
+    assertEquals(61, ownerFryTodos.length, "Incorrect number of todos with owner Fry");
   }
 
   @Test
@@ -43,10 +43,10 @@ public class FilterTodosByOwnerFromDB {
 
     queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
     Todo[] ownerBlancheTodos = db.listTodos(queryParams);
-    assertEquals(3, ownerBlancheTodos.length, "Incorrect number of todos with owner Blanche");
+    assertEquals(43, ownerBlancheTodos.length, "Incorrect number of todos with owner Blanche");
 
     queryParams.put("owner", Arrays.asList(new String[] {"Fry"}));
-    Todo[] age33todos = db.listTodos(queryParams);
-    assertEquals(1, age33todos.length, "Incorrect number of todos with owner Fry");
+    Todo[] ownerFryTodos = db.listTodos(queryParams);
+    assertEquals(61, ownerFryTodos.length, "Incorrect number of todos with owner Fry");
   }
 }
