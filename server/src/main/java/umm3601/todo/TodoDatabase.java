@@ -2,11 +2,14 @@ package umm3601.todo;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
+
 import io.javalin.http.BadRequestResponse;
 
 /**
@@ -54,30 +57,37 @@ public class TodoDatabase {
     // Filter owner if defined
     if (queryParams.containsKey("owner")) {
       String ownerParam = queryParams.get("owner").get(0);
-      try {
-        String targetOwner = ownerParam;
-        filteredTodos = filterTodosByOwner(filteredTodos, targetOwner);
-      } catch (NumberFormatException e) {
-        throw new BadRequestResponse("Specified owner '" + ownerParam + "' can't be parsed to an integer");
-      }
+      filteredTodos = filterTodosByOwner(filteredTodos, ownerParam);
+
     }
     // Filter status if defined
     if (queryParams.containsKey("status")) {
       String statusParam = queryParams.get("status").get(0);
-      try{
-        String targetStatus = statusParam;
-        filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
-      } catch (IllegalArgumentException e) {
-        throw new BadRequestResponse("Specified status '" + statusParam + "' can't be parsed to a string");
+      if (statusParam.equals("Complete")){
+        filteredTodos = filterTodosByStatus(filteredTodos, true);
+      }
+      if(statusParam.equals("Incomplete")){
+        filteredTodos = filterTodosByStatus(filteredTodos, false);
       }
 
     }
     // Process other query parameters here...
     if(queryParams.containsKey("category")){
-      String targetCategory = queryParams.get("category").get(0);
-      filteredTodos = filterTodosByCategory(filteredTodos, targetCategory);
+      String categoryParam = queryParams.get("category").get(0);
+      filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
 
+    // Limit number of todos displayed.
+    if(queryParams.containsKey("limit")){
+      String limitParam = queryParams.get("limit").get(0);
+      try{
+        int limitTarget = Integer.parseInt(limitParam);
+        filteredTodos = filterTodosByStatus(filteredTodos, limitTarget); // This is a placeholder, we need to find a way to limit the number
+        // of todos shown.
+      }catch(NumberFormatException e){
+        throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
+      }
+    }
     return filteredTodos;
   }
 
@@ -90,7 +100,7 @@ public class TodoDatabase {
    *         owner
    */
   public Todo[] filterTodosByOwner(Todo[] todos, String targetOwner) {
-    return Arrays.stream(todos).filter(x -> x.owner == targetOwner).toArray(Todo[]::new);
+    return Arrays.stream(todos).filter(x -> x.owner.equals(targetOwner)).toArray(Todo[]::new);
   }
 
   /**
@@ -101,8 +111,8 @@ public class TodoDatabase {
    * @return an array of all the todos from the given list that have the target
    *         status
    */
-  public Todo[] filterTodosByStatus(Todo[] todos, String targetStatus) {
-    return Arrays.stream(todos).filter(x -> Boolean.toString(x.status) == targetStatus).toArray(Todo[]::new);  //  This might be a pain-point, doing boolean -> string conversion.
+  public Todo[] filterTodosByStatus(Todo[] todos, boolean targetStatus) {
+    return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todo[]::new);  //  This might be a pain-point, doing boolean -> string conversion.
   }
 
   /**
@@ -114,6 +124,10 @@ public class TodoDatabase {
    *         category
    */
   public Todo[] filterTodosByCategory(Todo[] todos, String targetCategory) {
-    return Arrays.stream(todos).filter(x -> x.category == targetCategory).toArray(Todo[]::new);
+    return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todo[]::new);
   }
+
+  /**
+   * Limit the size of the array of the todos.
+   */
 }
