@@ -13,6 +13,7 @@ public class Server {
   private static final int PORT_NUMBER = 4567;
   public static final String CLIENT_DIRECTORY = "../client";
   public static final String USER_DATA_FILE = "/users.json";
+  public static final String TODO_DATA_FILE = "/todos.json";
   private static UserDatabase userDatabase;
 
   public static void main(String[] args) {
