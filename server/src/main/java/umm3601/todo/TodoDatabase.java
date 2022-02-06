@@ -51,7 +51,7 @@ public class TodoDatabase {
   public Todo[] listTodos(Map<String, List<String>> queryParams) {
     Todo[] filteredTodos = allTodos;
 
-    // Filter age if defined
+    // Filter owner if defined
     if (queryParams.containsKey("owner")) {
       String ownerParam = queryParams.get("owner").get(0);
       try {
@@ -63,8 +63,14 @@ public class TodoDatabase {
     }
     // Filter status if defined
     if (queryParams.containsKey("status")) {
-      String targetStatus = queryParams.get("status").get(0);
-      filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
+      String statusParam = queryParams.get("status").get(0);
+      try{
+        String targetStatus = statusParam;
+        filteredTodos = filterTodosByStatus(filteredTodos, targetStatus);
+      } catch (IllegalArgumentException e) {
+        throw new BadRequestResponse("Specified status '" + statusParam + "' can't be parsed to a string");
+      }
+
     }
     // Process other query parameters here...
     if(queryParams.containsKey("category")){
