@@ -1,4 +1,4 @@
-package umm3601.user;
+package umm3601.todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests umm3601.user.UserDatabase listUser functionality
+ * Tests umm3601.todo.TodoDatabase listTodo functionality
  */
 // The tests here include a ton of "magic numbers" (numeric constants).
 // It wasn't clear to me that giving all of them names would actually
@@ -21,20 +21,21 @@ import org.junit.jupiter.api.Test;
 public class FullTodoListFromDB {
 
   @Test
-  public void totalUserCount() throws IOException {
-    UserDatabase db = new UserDatabase("/users.json");
-    User[] allUsers = db.listUsers(new HashMap<>());
-    assertEquals(10, allUsers.length, "Incorrect total number of users");
+  public void totalTodosCount() throws IOException {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    Todo[] allTodos = db.listTodos(new HashMap<>());
+    assertEquals(10, allTodos.length, "Incorrect total number of todos");
   }
 
   @Test
-  public void firstUserInFullList() throws IOException {
-    UserDatabase db = new UserDatabase("/users.json");
-    User[] allUsers = db.listUsers(new HashMap<>());
-    User firstUser = allUsers[0];
-    assertEquals("Connie Stewart", firstUser.name, "Incorrect name");
-    assertEquals(25, firstUser.age, "Incorrect age");
-    assertEquals("OHMNET", firstUser.company, "Incorrect company");
-    assertEquals("conniestewart@ohmnet.com", firstUser.email, "Incorrect e-mail");
+  public void firstTodoInFullList() throws IOException {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    Todo[] allTodos = db.listTodos(new HashMap<>());
+    Todo firstTodo = allTodos[0];
+    assertEquals("58895985a22c04e761776d54", firstTodo._id, "Incorrect ID");
+    assertEquals("Blanche", firstTodo.owner, "Incorrect owner");
+    assertEquals(false, firstTodo.status, "Incorrect status");
+    assertEquals("In sunt ex non tempor cillum commodo amet incididunt anim qui commodo quis. Cillum non labore ex sint esse.", firstTodo.body, "Incorrect body");
+    assertEquals("software design", firstTodo.category, "Incorrect category");
   }
 }

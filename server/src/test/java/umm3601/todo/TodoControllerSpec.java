@@ -1,4 +1,4 @@
-package umm3601.user;
+package umm3601.todo;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -24,7 +24,7 @@ import io.javalin.http.NotFoundResponse;
 import umm3601.Server;
 
 /**
- * Tests the logic of the UserController
+ * Tests the logic of the TodoController
  *
  * @throws IOException
  */
@@ -36,19 +36,19 @@ import umm3601.Server;
 // also a lot of "magic strings" that Checkstyle doesn't actually
 // flag as a problem) make more sense.
 @SuppressWarnings({ "MagicNumber" })
-public class UserControllerSpec {
+public class TodoControllerSpec {
 
   private Context ctx = mock(Context.class);
 
-  private UserController userController;
-  private static UserDatabase db;
+  private TodoController todoController;
+  private static TodoDatabase db;
 
   @BeforeEach
   public void setUp() throws IOException {
     ctx.clearCookieStore();
 
-    db = new UserDatabase(Server.USER_DATA_FILE);
-    userController = new UserController(db);
+    db = new TodoDatabase(Server.TODO_DATA_FILE);
+    todoController = new TodoController(db);
   }
 
   /**
@@ -57,104 +57,109 @@ public class UserControllerSpec {
    * @throws IOException
    */
   @Test
-  public void canGetAllUsers() throws IOException {
+  public void canGetAllTodos() throws IOException {
     // Call the method on the mock context, which doesn't
     // include any filters, so we should get all the users
     // back.
-    userController.getUsers(ctx);
+    TodoController.getTodos(ctx);
 
     // Confirm that `json` was called with all the users.
-    ArgumentCaptor<User[]> argument = ArgumentCaptor.forClass(User[].class);
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
     verify(ctx).json(argument.capture());
     assertEquals(db.size(), argument.getValue().length);
   }
 
   @Test
-  public void canGetUsersWithAge25() throws IOException {
-    // Add a query param map to the context that maps "age"
-    // to "25".
+  public void canGetTodosWithOwnerBlanche() throws IOException {
+    // Add a query param map to the context that maps "owner" to "Blanche".
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("age", Arrays.asList(new String[] {"25"}));
+    queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     // Call the method on the mock controller with the added
-    // query param map to limit the result to just users with
-    // age 25.
-    userController.getUsers(ctx);
+    // query param map to limit the result to just todos with owner Blanche.
+    TodoController.getTodos(ctx);
 
-    // Confirm that all the users passed to `json` have age 25.
-    ArgumentCaptor<User[]> argument = ArgumentCaptor.forClass(User[].class);
+    // Confirm that all the todos passed to `json` have owner "Blanche".
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
     verify(ctx).json(argument.capture());
-    for (User user : argument.getValue()) {
-      assertEquals(25, user.age);
+    for (Todo todo : argument.getValue()) {
+      assertEquals("Blanche", todo.owner);
     }
   }
 
   /**
    * Test that if the user sends a request with an illegal value in
-   * the age field (i.e., something that can't be parsed to a number)
+   * the status field (i.e., something that can't be parsed to a boolean)
    * we get a reasonable error code back.
    */
   @Test
-  public void respondsAppropriatelyToIllegalAge() {
-    // We'll set the requested "age" to be a string ("abc")
-    // that can't be parsed to a number.
+  public void respondsAppropriatelyToIllegalStatus() {
+    // We'll set the requested "Owner" to be a string ("abc")
+    // that can't be parsed to a boolean.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("age", Arrays.asList(new String[] {"abc"}));
+    queryParams.put("status", Arrays.asList(new String[] {"abc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     // This should now throw a `BadRequestResponse` exception because
-    // our request has an age that can't be parsed to a number.
+    // our request has a status that can't be parsed to a boolean.
     Assertions.assertThrows(BadRequestResponse.class, () -> {
-      userController.getUsers(ctx);
+      TodoController.getTodos(ctx);
     });
   }
 
+  /**
+   * Test if the user sends a request with an illegal value in the owner field.
+   * @throws IOException
+   */
+
+
+
   @Test
-  public void canGetUsersWithCompany() throws IOException {
+  public void canGetTodosWithCategory() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
+    queryParams.put("category", Arrays.asList(new String[] {"software design"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
-    userController.getUsers(ctx);
+    TodoController.getTodos(ctx);
 
     // Confirm that all the users passed to `json` work for OHMNET.
-    ArgumentCaptor<User[]> argument = ArgumentCaptor.forClass(User[].class);
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
     verify(ctx).json(argument.capture());
-    for (User user : argument.getValue()) {
-      assertEquals("OHMNET", user.company);
+    for (Todo todo : argument.getValue()) {
+      assertEquals("software design", todo.category);
     }
   }
 
   @Test
-  public void canGetUsersWithGivenAgeAndCompany() throws IOException {
+  public void canGetTodosWithGivenOwnerAndCategory() throws IOException {
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("company", Arrays.asList(new String[] {"OHMNET"}));
-    queryParams.put("age", Arrays.asList(new String[] {"25"}));
+    queryParams.put("category", Arrays.asList(new String[] {"software design"}));
+    queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
-    userController.getUsers(ctx);
+    TodoController.getTodos(ctx);
 
     // Confirm that all the users passed to `json` work for OHMNET
     // and have age 25.
-    ArgumentCaptor<User[]> argument = ArgumentCaptor.forClass(User[].class);
+    ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
     verify(ctx).json(argument.capture());
-    for (User user : argument.getValue()) {
-      assertEquals(25, user.age);
-      assertEquals("OHMNET", user.company);
+    for (Todo todo : argument.getValue()) {
+      assertEquals("Blanche", todo.owner);
+      assertEquals("software design", todo.category);
     }
   }
 
   @Test
-  public void canGetUserWithSpecifiedId() throws IOException {
+  public void canGetTodoWithSpecifiedId() throws IOException {
     String id = "588935f5c668650dc77df581";
-    User user = db.getUser(id);
+    Todo todo = db.getTodo(id);
 
     when(ctx.pathParam("id")).thenReturn(id);
 
-    userController.getUser(ctx);
+    TodoController.getTodos(ctx);
 
-    verify(ctx).json(user);
+    verify(ctx).json(todo);
     verify(ctx).status(HttpCode.OK);
   }
 
@@ -162,7 +167,7 @@ public class UserControllerSpec {
   public void respondsAppropriatelyToRequestForNonexistentId() throws IOException {
     when(ctx.pathParam("id")).thenReturn(null);
     Assertions.assertThrows(NotFoundResponse.class, () -> {
-      userController.getUser(ctx);
+      TodoController.getTodo(ctx);
     });
   }
 }
