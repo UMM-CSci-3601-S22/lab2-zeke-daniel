@@ -90,19 +90,19 @@ public class TodoControllerSpec {
 
   /**
    * Test that if the user sends a request with an illegal value in
-   * the status field (i.e., something that can't be parsed to a boolean)
+   * the status field (i.e., something that can't be parsed to an int)
    * we get a reasonable error code back.
    */
   @Test
-  public void respondsAppropriatelyToIllegalStatus() {
-    // We'll set the requested "Owner" to be a string ("abc")
-    // that can't be parsed to a boolean.
+  public void respondsAppropriatelyToIllegalLimit() {
+    // We'll set the requested "limit" to be a string ("abc")
+    // that can't be parsed to a number.
     Map<String, List<String>> queryParams = new HashMap<>();
-    queryParams.put("status", Arrays.asList(new String[] {"abc"}));
+    queryParams.put("limit", Arrays.asList(new String[] {"abc"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
     // This should now throw a `BadRequestResponse` exception because
-    // our request has a status that can't be parsed to a boolean.
+    // our request has an limit that can't be parsed to a number.
     Assertions.assertThrows(BadRequestResponse.class, () -> {
       todoController.getTodos(ctx);
     });

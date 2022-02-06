@@ -26,13 +26,13 @@ public class FilterTodosByCombinedFiltersFromDB {
     assertEquals(43, ownerBlancheTodos.length, "Incorrect number of todos with owner Blanche");
 
     queryParams.clear();
-    queryParams.put("status", Arrays.asList(new String[] {"true"}));
+    queryParams.put("status", Arrays.asList(new String[] {"Complete"}));
     Todo[] trueTodos = db.listTodos(queryParams);
     assertEquals(143, trueTodos.length, "Incorrect number of todos with status true");
 
     queryParams.clear();
     queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
-    queryParams.put("status", Arrays.asList(new String[] {"true"}));
+    queryParams.put("status", Arrays.asList(new String[] {"Complete"}));
     Todo[] trueBlancheTodos = db.listTodos(queryParams);
     assertEquals(22, trueBlancheTodos.length, "Incorrect number of todos with status true and owner Blanche");
   }
