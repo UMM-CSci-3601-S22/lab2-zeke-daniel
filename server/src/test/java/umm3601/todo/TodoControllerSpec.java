@@ -61,7 +61,7 @@ public class TodoControllerSpec {
     // Call the method on the mock context, which doesn't
     // include any filters, so we should get all the users
     // back.
-    TodoController.getTodos(ctx);
+    todoController.getTodos(ctx);
 
     // Confirm that `json` was called with all the users.
     ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
@@ -78,7 +78,7 @@ public class TodoControllerSpec {
 
     // Call the method on the mock controller with the added
     // query param map to limit the result to just todos with owner Blanche.
-    TodoController.getTodos(ctx);
+    todoController.getTodos(ctx);
 
     // Confirm that all the todos passed to `json` have owner "Blanche".
     ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
@@ -104,7 +104,7 @@ public class TodoControllerSpec {
     // This should now throw a `BadRequestResponse` exception because
     // our request has a status that can't be parsed to a boolean.
     Assertions.assertThrows(BadRequestResponse.class, () -> {
-      TodoController.getTodos(ctx);
+      todoController.getTodos(ctx);
     });
   }
 
@@ -121,7 +121,7 @@ public class TodoControllerSpec {
     queryParams.put("category", Arrays.asList(new String[] {"software design"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
-    TodoController.getTodos(ctx);
+    todoController.getTodos(ctx);
 
     // Confirm that all the users passed to `json` work for OHMNET.
     ArgumentCaptor<Todo[]> argument = ArgumentCaptor.forClass(Todo[].class);
@@ -138,7 +138,7 @@ public class TodoControllerSpec {
     queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
     when(ctx.queryParamMap()).thenReturn(queryParams);
 
-    TodoController.getTodos(ctx);
+    todoController.getTodos(ctx);
 
     // Confirm that all the users passed to `json` work for OHMNET
     // and have age 25.
@@ -152,12 +152,12 @@ public class TodoControllerSpec {
 
   @Test
   public void canGetTodoWithSpecifiedId() throws IOException {
-    String id = "588935f5c668650dc77df581";
+    String id = "58895985a22c04e761776d54";
     Todo todo = db.getTodo(id);
 
     when(ctx.pathParam("id")).thenReturn(id);
 
-    TodoController.getTodos(ctx);
+    todoController.getTodo(ctx);
 
     verify(ctx).json(todo);
     verify(ctx).status(HttpCode.OK);
@@ -167,7 +167,7 @@ public class TodoControllerSpec {
   public void respondsAppropriatelyToRequestForNonexistentId() throws IOException {
     when(ctx.pathParam("id")).thenReturn(null);
     Assertions.assertThrows(NotFoundResponse.class, () -> {
-      TodoController.getTodo(ctx);
+      todoController.getTodo(ctx);
     });
   }
 }
