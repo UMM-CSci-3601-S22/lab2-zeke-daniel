@@ -2,13 +2,11 @@ package umm3601.todo;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.ArrayBuilders.BooleanBuilder;
 
 import io.javalin.http.BadRequestResponse;
 
@@ -82,7 +80,7 @@ public class TodoDatabase {
       String limitParam = queryParams.get("limit").get(0);
       try{
         int limitTarget = Integer.parseInt(limitParam);
-        filteredTodos = filterTodosByStatus(filteredTodos, limitTarget); // This is a placeholder, we need to find a way to limit the number
+        filteredTodos = limitTodos(filteredTodos, limitTarget); // This is a placeholder, we need to find a way to limit the number
         // of todos shown.
       }catch(NumberFormatException e){
         throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
@@ -130,4 +128,8 @@ public class TodoDatabase {
   /**
    * Limit the size of the array of the todos.
    */
+  public Todo[] limitTodos(Todo[] todos, int limitTarget)
+  {
+    return Arrays.copyOfRange(todos, 0, limitTarget);
+  }
 }
