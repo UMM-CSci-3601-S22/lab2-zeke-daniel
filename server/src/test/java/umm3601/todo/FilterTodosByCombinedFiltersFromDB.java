@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
  * Tests umm3601.user.TodosDatabase listTodos with _age_ and _company_ query
  * parameters
  */
+@SuppressWarnings({ "MagicNumber" })
 public class FilterTodosByCombinedFiltersFromDB {
 
   @Test
