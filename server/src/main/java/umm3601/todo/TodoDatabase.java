@@ -61,7 +61,7 @@ public class TodoDatabase {
     // Filter status if defined
     if (queryParams.containsKey("status")) {
       String statusParam = queryParams.get("status").get(0);
-      if (statusParam.equals("Complete")){
+      if (statusParam.equals("Complete")) {
         filteredTodos = filterTodosByStatus(filteredTodos, true);
       }
       if (statusParam.equals("Incomplete")) {
@@ -80,8 +80,8 @@ public class TodoDatabase {
       String limitParam = queryParams.get("limit").get(0);
       try {
         int limitTarget = Integer.parseInt(limitParam);
-        filteredTodos = limitTodos(filteredTodos, limitTarget); // This is a placeholder, we need to find a way to limit the number
-        // of todos shown.
+        filteredTodos = limitTodos(filteredTodos, limitTarget); // This is a placeholder, we need to
+        // find a way to limit the number of todos shown.
       } catch (NumberFormatException e) {
         throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
       }
@@ -110,7 +110,7 @@ public class TodoDatabase {
    *         status
    */
   public Todo[] filterTodosByStatus(Todo[] todos, boolean targetStatus) {
-    return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todo[]::new);  //  This might be a pain-point, doing boolean -> string conversion.
+    return Arrays.stream(todos).filter(x -> x.status == targetStatus).toArray(Todo[]::new);
   }
 
   /**
@@ -128,8 +128,7 @@ public class TodoDatabase {
   /**
    * Limit the size of the array of the todos.
    */
-  public Todo[] limitTodos(Todo[] todos, int limitTarget)
-  {
+  public Todo[] limitTodos(Todo[] todos, int limitTarget) {
     return Arrays.copyOfRange(todos, 0, limitTarget);
   }
 }
