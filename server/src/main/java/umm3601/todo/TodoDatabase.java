@@ -64,25 +64,25 @@ public class TodoDatabase {
       if (statusParam.equals("Complete")){
         filteredTodos = filterTodosByStatus(filteredTodos, true);
       }
-      if(statusParam.equals("Incomplete")){
+      if (statusParam.equals("Incomplete")) {
         filteredTodos = filterTodosByStatus(filteredTodos, false);
       }
 
     }
     // Process other query parameters here...
-    if(queryParams.containsKey("category")){
+    if (queryParams.containsKey("category")) {
       String categoryParam = queryParams.get("category").get(0);
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
 
     // Limit number of todos displayed.
-    if(queryParams.containsKey("limit")){
+    if (queryParams.containsKey("limit")) {
       String limitParam = queryParams.get("limit").get(0);
-      try{
+      try {
         int limitTarget = Integer.parseInt(limitParam);
         filteredTodos = limitTodos(filteredTodos, limitTarget); // This is a placeholder, we need to find a way to limit the number
         // of todos shown.
-      }catch(NumberFormatException e){
+      } catch (NumberFormatException e) {
         throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
       }
     }
