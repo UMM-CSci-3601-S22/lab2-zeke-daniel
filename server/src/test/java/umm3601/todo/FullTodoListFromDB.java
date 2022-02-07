@@ -39,4 +39,10 @@ public class FullTodoListFromDB {
     + "anim qui commodo quis. Cillum non labore ex sint esse.", firstTodo.body, "Incorrect body");
     assertEquals("software design", firstTodo.category, "Incorrect category");
   }
+
+  @Test
+  public void dbSize() throws IOException {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    assertEquals(300, db.size(), "Incorrect total number of todos");
+  }
 }
