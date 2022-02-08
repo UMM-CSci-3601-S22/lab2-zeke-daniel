@@ -46,15 +46,15 @@ public class Server {
     // API endpoints
 
     // Get specific user
-    server.get("/api/users/{id}", userController::getUser);
+    server.get("/api/users/_id", userController::getUser);
 
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
 
-    // Get specific todo
-    server.get("/api/users/{id}", todoController::getTodo);
 
-    // List todos, filtered using query parameters
+    // Todo API
+
+    // List all todos, filtered using query parameters
     server.get("/api/todos", todoController::getTodos);
   }
 
