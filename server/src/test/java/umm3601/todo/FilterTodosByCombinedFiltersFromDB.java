@@ -33,7 +33,7 @@ public class FilterTodosByCombinedFiltersFromDB {
 
     queryParams.clear();
     queryParams.put("owner", Arrays.asList(new String[] {"Blanche"}));
-    queryParams.put("status", Arrays.asList(new String[] {"Complete"}));
+    queryParams.put("status", Arrays.asList(new String[] {"complete"}));
     Todo[] trueBlancheTodos = db.listTodos(queryParams);
     assertEquals(22, trueBlancheTodos.length, "Incorrect number of todos with status true and owner Blanche");
   }
@@ -73,8 +73,7 @@ public class FilterTodosByCombinedFiltersFromDB {
    * Tests listTodos with status parameter
    */
   @Test
-  public void listTodosWithInompleteStatus() throws IOException
-  {
+  public void listTodosWithIncompleteStatus() throws IOException {
     TodoDatabase db = new TodoDatabase("/todos.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
@@ -82,4 +81,39 @@ public class FilterTodosByCombinedFiltersFromDB {
     Todo[] falseTodos = db.listTodos(queryParams);
     assertEquals(157, falseTodos.length, "Incorrect number of todos with false status");
   }
+
+  /**
+   * Tests contains functionality.
+   */
+  @Test
+  public void listTodosWithGivenString() throws IOException {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    Map<String, List<String>> queryParams = new HashMap<>();
+
+    queryParams.put("contains", Arrays.asList(new String[] {"Cillum"}));
+    Todo[] cillumTodos = db.listTodos(queryParams);
+    assertEquals(8, cillumTodos.length, "Incorrect number of todos whose"
+    + " body contains 'Cillum'");
+  }
+
+  /**
+   * Tests sorting functionality
+   */
+  /*
+  @Test
+  public void sortAlphabeticallyByOwner() throws IOException
+  {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    Map<String, List<String>> queryParams = new HashMap<>();
+    Todo[] tempDB = db.listTodos(queryParams).clone();
+    Todo[] sortedDB = tempDB.sort();
+
+
+    queryParams.put("orderBy", Arrays.asList(new String[] {"owner"}));
+    Todo[] ownerOrdered = db.listTodos(queryParams);
+    assertEquals(sortedDB, ownerOrdered, "Array is not sorted correctly");
+
+  }
+*/
+
 }
