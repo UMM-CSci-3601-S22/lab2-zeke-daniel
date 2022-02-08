@@ -74,6 +74,11 @@ public class TodoDatabase {
       String categoryParam = queryParams.get("category").get(0);
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
+    // Filter by matching string in body
+    if(queryParams.containsKey("contains")) {
+      String stringToMatch = queryParams.get("contains").get(0);
+      filteredTodos = matchStringInBody(filteredTodos, stringToMatch);
+    }
 
     // Limit number of todos displayed.
     if (queryParams.containsKey("limit")) {
@@ -123,6 +128,17 @@ public class TodoDatabase {
    */
   public Todo[] filterTodosByCategory(Todo[] todos, String targetCategory) {
     return Arrays.stream(todos).filter(x -> x.category.equals(targetCategory)).toArray(Todo[]::new);
+  }
+
+  /**
+   * Get an array of all the todos whose body contains a target string
+   * @param todos The list of todos to filter
+   * @param targetString  The string to match in the bodies of the todos
+   * @return  an array of all the todos from the given list
+   * that have the target string in their body
+   */
+  public Todo[] matchStringInBody(Todo[] todos, String targetString) {
+    return Arrays.stream(todos).filter(x -> x.body.contains(targetString)).toArray(Todo[]::new);
   }
 
   /**
