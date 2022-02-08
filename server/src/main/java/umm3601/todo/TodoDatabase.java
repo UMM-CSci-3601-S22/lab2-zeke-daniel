@@ -86,6 +86,11 @@ public class TodoDatabase {
         throw new BadRequestResponse("Specified limit '" + limitParam + "' can't be parsed to an integer");
       }
     }
+
+    if (queryParams.containsKey("contains")) {
+      String containsParam = queryParams.get("contains").get(0);
+      filteredTodos = filterTodosByContains(filteredTodos, containsParam);
+    }
     return filteredTodos;
   }
 
@@ -130,5 +135,17 @@ public class TodoDatabase {
    */
   public Todo[] limitTodos(Todo[] todos, int limitTarget) {
     return Arrays.copyOfRange(todos, 0, limitTarget);
+  }
+
+  /**
+   * Get an array of all the todos containing the targetString.
+   *
+   * @param todos         the list of todos to filter by category
+   * @param targetString the target category to look for
+   * @return an array of all the todos from the given list that contain the target
+   *         string
+   */
+  public Todo[] filterTodosByContains(Todo[] todos, String targetString) {
+    return Arrays.stream(todos).filter(x -> x.body.toLowerCase().contains(targetString.toLowerCase())).toArray(Todo[]::new);
   }
 }
