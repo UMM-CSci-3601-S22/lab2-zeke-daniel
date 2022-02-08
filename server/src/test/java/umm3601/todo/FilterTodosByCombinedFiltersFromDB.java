@@ -69,4 +69,17 @@ public class FilterTodosByCombinedFiltersFromDB {
     assertEquals(5, limitOwner.length, "Incorrect number of todos displayed");
   }
 
+  /**
+   * Tests listTodos with status parameter
+   */
+  @Test
+  public void listTodosWithInompleteStatus() throws IOException
+  {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    Map<String, List<String>> queryParams = new HashMap<>();
+
+    queryParams.put("status", Arrays.asList(new String[] {"Incomplete"}));
+    Todo[] falseTodos = db.listTodos(queryParams);
+    assertEquals(157, falseTodos.length, "Incorrect number of todos with false status");
+  }
 }
