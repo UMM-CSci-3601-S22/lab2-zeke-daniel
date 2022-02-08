@@ -75,7 +75,7 @@ public class TodoDatabase {
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
     // Filter by matching string in body
-    if(queryParams.containsKey("contains")) {
+    if (queryParams.containsKey("contains")) {
       String stringToMatch = queryParams.get("contains").get(0);
       filteredTodos = matchStringInBody(filteredTodos, stringToMatch);
     }

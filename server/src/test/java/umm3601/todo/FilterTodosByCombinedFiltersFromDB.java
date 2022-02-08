@@ -98,4 +98,24 @@ public class FilterTodosByCombinedFiltersFromDB {
     " body contains 'Cillum'");
   }
 
+  /**
+   * Tests sorting functionality
+   */
+  /*
+  @Test
+  public void sortAlphabeticallyByOwner() throws IOException
+  {
+    TodoDatabase db = new TodoDatabase("/todos.json");
+    Map<String, List<String>> queryParams = new HashMap<>();
+    Todo[] tempDB = db.listTodos(queryParams).clone();
+    Todo[] sortedDB = tempDB.sort();
+
+
+    queryParams.put("orderBy", Arrays.asList(new String[] {"owner"}));
+    Todo[] ownerOrdered = db.listTodos(queryParams);
+    assertEquals(sortedDB, ownerOrdered, "Array is not sorted correctly");
+
+  }
+*/
+
 }
