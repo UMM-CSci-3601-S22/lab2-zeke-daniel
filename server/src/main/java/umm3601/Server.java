@@ -46,7 +46,7 @@ public class Server {
     // API endpoints
 
     // Get specific user
-    server.get("/api/users/_id", userController::getUser);
+    server.get("/api/users/{id}", userController::getUser);
 
     // List users, filtered using query parameters
     server.get("/api/users", userController::getUsers);
@@ -56,6 +56,9 @@ public class Server {
 
     // List all todos, filtered using query parameters
     server.get("/api/todos", todoController::getTodos);
+
+    
+
   }
 
   /***

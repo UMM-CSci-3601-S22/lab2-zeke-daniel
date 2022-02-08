@@ -27,7 +27,7 @@ public class FilterTodosByCombinedFiltersFromDB {
     assertEquals(43, ownerBlancheTodos.length, "Incorrect number of todos with owner Blanche");
 
     queryParams.clear();
-    queryParams.put("status", Arrays.asList(new String[] {"Complete"}));
+    queryParams.put("status", Arrays.asList(new String[] {"complete"}));
     Todo[] trueTodos = db.listTodos(queryParams);
     assertEquals(143, trueTodos.length, "Incorrect number of todos with status true");
 
@@ -78,7 +78,7 @@ public class FilterTodosByCombinedFiltersFromDB {
     TodoDatabase db = new TodoDatabase("/todos.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
-    queryParams.put("status", Arrays.asList(new String[] {"Incomplete"}));
+    queryParams.put("status", Arrays.asList(new String[] {"incomplete"}));
     Todo[] falseTodos = db.listTodos(queryParams);
     assertEquals(157, falseTodos.length, "Incorrect number of todos with false status");
   }
