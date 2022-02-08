@@ -73,8 +73,7 @@ public class FilterTodosByCombinedFiltersFromDB {
    * Tests listTodos with status parameter
    */
   @Test
-  public void listTodosWithIncompleteStatus() throws IOException
-  {
+  public void listTodosWithIncompleteStatus() throws IOException {
     TodoDatabase db = new TodoDatabase("/todos.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
@@ -87,15 +86,14 @@ public class FilterTodosByCombinedFiltersFromDB {
    * Tests contains functionality.
    */
   @Test
-  public void listTodosWithGivenString() throws IOException
-  {
+  public void listTodosWithGivenString() throws IOException {
     TodoDatabase db = new TodoDatabase("/todos.json");
     Map<String, List<String>> queryParams = new HashMap<>();
 
     queryParams.put("contains", Arrays.asList(new String[] {"Cillum"}));
     Todo[] cillumTodos = db.listTodos(queryParams);
-    assertEquals(8, cillumTodos.length, "Incorrect number of todos whose" +
-    " body contains 'Cillum'");
+    assertEquals(8, cillumTodos.length, "Incorrect number of todos whose"
+    + " body contains 'Cillum'");
   }
 
   /**
