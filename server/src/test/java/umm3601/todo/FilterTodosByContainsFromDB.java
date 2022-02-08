@@ -19,10 +19,10 @@ public class FilterTodosByContainsFromDB {
     Todo[] allTodos = db.listTodos(new HashMap<>());
 
     Todo[] containsIpsumTodos = db.filterTodosByContains(allTodos, "Ipsum");
-    assertEquals(71, containsIpsumTodos.length, "Incorrect number of todos with text 'Ipsum' in the body");
+    assertEquals(12, containsIpsumTodos.length, "Incorrect number of todos with text 'Ipsum' in the body");
 
     Todo[] containsAnimTodos = db.filterTodosByContains(allTodos, "Anim");
-    assertEquals(94, containsAnimTodos.length, "Incorrect number of todos with text 'Anim' in the body");
+    assertEquals(12, containsAnimTodos.length, "Incorrect number of todos with text 'Anim' in the body");
   }
 
   @Test
@@ -32,12 +32,12 @@ public class FilterTodosByContainsFromDB {
 
     queryParams.put("contains", Arrays.asList(new String[] {"Ipsum"}));
     Todo[] containsIpsumTodos = db.listTodos(queryParams);
-    assertEquals(71, containsIpsumTodos.length, "Incorrect number of todos with text 'Ipsum' in the body");
+    assertEquals(12, containsIpsumTodos.length, "Incorrect number of todos with text 'Ipsum' in the body");
 
     queryParams.clear();
     queryParams.put("contains", Arrays.asList(new String[] {"Anim"}));
     Todo[] containsAnimTodos = db.listTodos(queryParams);
-    assertEquals(94, containsAnimTodos.length, "Incorrect number of todos with text 'Anim' in the body");
+    assertEquals(12, containsAnimTodos.length, "Incorrect number of todos with text 'Anim' in the body");
   }
 
 
