@@ -142,7 +142,11 @@ public class TodoDatabase {
    *         string
    */
   public Todo[] filterTodosByContains(Todo[] todos, String targetString) {
-    return Arrays.stream(todos).filter(x -> x.body.toLowerCase().contains(targetString.toLowerCase())).toArray(Todo[]::new);
+    return Arrays
+    .stream(todos)
+    .filter(x -> x.body.toLowerCase()
+    .contains(targetString.toLowerCase()))
+    .toArray(Todo[]::new);
   }
 
   /**

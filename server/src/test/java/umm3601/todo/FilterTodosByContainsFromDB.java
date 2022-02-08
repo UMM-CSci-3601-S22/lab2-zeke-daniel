@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 public class FilterTodosByContainsFromDB {
 
   @Test
-  public void filterTodosByContains() throws IOException{
+  public void filterTodosByContains() throws IOException {
     TodoDatabase db = new TodoDatabase("/todos.json");
     Todo[] allTodos = db.listTodos(new HashMap<>());
 
