@@ -68,15 +68,17 @@ public class TodoDatabase {
         filteredTodos = filterTodosByStatus(filteredTodos, false);
       }
     }
+
     // Process other query parameters here...
     if (queryParams.containsKey("category")) {
       String categoryParam = queryParams.get("category").get(0);
       filteredTodos = filterTodosByCategory(filteredTodos, categoryParam);
     }
+
     // Filter by matching string in body
     if (queryParams.containsKey("contains")) {
-      String stringToMatch = queryParams.get("contains").get(0);
-      filteredTodos = matchStringInBody(filteredTodos, stringToMatch);
+      String containsParam = queryParams.get("contains").get(0);
+      filteredTodos = filterTodosByContains(filteredTodos, containsParam);
     }
 
     // Limit number of todos displayed.
@@ -91,10 +93,6 @@ public class TodoDatabase {
       }
     }
 
-    if (queryParams.containsKey("contains")) {
-      String containsParam = queryParams.get("contains").get(0);
-      filteredTodos = filterTodosByContains(filteredTodos, containsParam);
-    }
     return filteredTodos;
   }
 
@@ -135,24 +133,6 @@ public class TodoDatabase {
   }
 
   /**
-   * Get an array of all the todos whose body contains a target string
-   * @param todos The list of todos to filter
-   * @param targetString  The string to match in the bodies of the todos
-   * @return  an array of all the todos from the given list
-   * that have the target string in their body
-   */
-  public Todo[] matchStringInBody(Todo[] todos, String targetString) {
-    return Arrays.stream(todos).filter(x -> x.body.contains(targetString)).toArray(Todo[]::new);
-  }
-
-  /**
-   * Limit the size of the array of the todos.
-   */
-  public Todo[] limitTodos(Todo[] todos, int limitTarget) {
-    return Arrays.copyOfRange(todos, 0, limitTarget);
-  }
-
-  /**
    * Get an array of all the todos containing the targetString.
    *
    * @param todos         the list of todos to filter by category
@@ -163,4 +143,12 @@ public class TodoDatabase {
   public Todo[] filterTodosByContains(Todo[] todos, String targetString) {
     return Arrays.stream(todos).filter(x -> x.body.toLowerCase().contains(targetString.toLowerCase())).toArray(Todo[]::new);
   }
+
+  /**
+   * Limit the size of the array of the todos.
+   */
+  public Todo[] limitTodos(Todo[] todos, int limitTarget) {
+    return Arrays.copyOfRange(todos, 0, limitTarget);
+  }
 }
+
