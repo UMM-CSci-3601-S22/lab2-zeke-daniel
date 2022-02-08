@@ -67,7 +67,6 @@ public class TodoDatabase {
       if (statusParam.equals("incomplete")) {
         filteredTodos = filterTodosByStatus(filteredTodos, false);
       }
-
     }
     // Process other query parameters here...
     if (queryParams.containsKey("category")) {
